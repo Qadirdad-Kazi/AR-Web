@@ -70,28 +70,24 @@ router.post('/', upload.single('model'), async (req, res) => {
       tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
       fileSize: uploadedFile.size,
       fileType: path.extname(uploadedFile.originalname).substring(1),
-      
-      // Cloudinary asset info
-      cloudinary: {
-        public_id: uploadedFile.filename,
-        secure_url: uploadedFile.path,
-        resource_type: uploadedFile.resource_type,
-        format: uploadedFile.format,
-        bytes: uploadedFile.size,
-      },
 
-      // URLs for the frontend
+      // Main GLB file info from Cloudinary
       glbFile: {
         public_id: uploadedFile.filename,
         secure_url: glbUrl,
+        resource_type: uploadedFile.resource_type || 'raw',
       },
+      // Derived USDZ file info
       usdzFile: {
-        public_id: uploadedFile.filename, // Same public_id
+        public_id: uploadedFile.filename,
         secure_url: usdzUrl,
+        resource_type: 'raw',
       },
+      // Derived thumbnail info
       thumbnail: {
-        public_id: uploadedFile.filename, // Same public_id
+        public_id: uploadedFile.filename,
         secure_url: thumbnailUrl,
+        resource_type: 'image',
       },
     });
 
