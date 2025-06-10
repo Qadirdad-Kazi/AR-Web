@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Download, Share2, Eye, Calendar, BarChart3, Smartphone, Monitor, AlertTriangle } from 'lucide-react';
 import ARViewer from '../components/ARViewer';
@@ -9,15 +9,13 @@ interface ModelData {
   name: string;
   description: string;
   glbFile?: {
-    url: string;
-    filename: string;
+    secure_url: string;
   };
   usdzFile?: {
-    url: string;
-    filename: string;
+    secure_url: string;
   };
   thumbnail?: {
-    url: string;
+    secure_url: string;
   };
   fileSize: number;
   viewCount: number;
@@ -198,24 +196,16 @@ const ModelViewer = () => {
               </div>
 
               {/* Viewer Content */}
-              <div className="p-8">
-                {activeTab === 'ar' ? (
+              <div className="aspect-w-16 aspect-h-9">
+                {activeTab === 'ar' && model.glbFile && (
                   <ARViewer
-                    glbUrl={model.glbFile?.url}
-                    usdzUrl={model.usdzFile?.url}
-                    modelName={model.name}
-                  />
-                ) : (
-                  <div className="aspect-video bg-gray-100 rounded-xl flex items-center justify-center">
-                    <div className="text-center">
-                      <Monitor className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-600">3D Preview Coming Soon</p>
-                      <p className="text-sm text-gray-500 mt-2">
-                        Use the AR Viewer tab to view the model
-                      </p>
-                    </div>
-                  </div>
+                      modelName={model.name}
+                      glbUrl={model.glbFile.secure_url}
+                      usdzUrl={model.usdzFile?.secure_url}
+                      posterUrl={model.thumbnail?.secure_url}
+                    />
                 )}
+                {/* Add 3D Preview component here if you have one */}
               </div>
             </div>
           </div>
@@ -274,19 +264,20 @@ const ModelViewer = () => {
                 <h3 className="font-semibold text-gray-900">Download</h3>
                 
                 {model.glbFile && (
-                  <button
-                    onClick={() => handleDownload(model.glbFile!.url, model.glbFile!.filename)}
-                    className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                  <button 
+                    onClick={() => model.glbFile && handleDownload(model.glbFile.secure_url, `${model.name}.glb`)}
+                    disabled={!model.glbFile}
+                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Download className="w-4 h-4" />
-                    <span>Download GLB</span>
+                    <Download className="w-5 h-5" />
+                    <span>Download .GLB</span>
                   </button>
                 )}
                 
                 {model.usdzFile && (
                   <button
-                    onClick={() => handleDownload(model.usdzFile!.url, model.usdzFile!.filename)}
-                    className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                    onClick={() => handleDownload(model.usdzFile!.secure_url, `${model.name}.usdz`)}
+                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-colors"
                   >
                     <Download className="w-4 h-4" />
                     <span>Download USDZ</span>

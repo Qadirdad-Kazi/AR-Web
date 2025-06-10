@@ -8,13 +8,13 @@ interface ModelCardProps {
     name: string;
     description: string;
     thumbnail: {
-      url: string;
+      secure_url: string;
     };
     glbFile?: {
-      url: string;
+      secure_url: string;
     };
     usdzFile?: {
-      url: string;
+      secure_url: string;
     };
     fileSize: number;
     viewCount: number;
@@ -64,7 +64,7 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
       {/* Thumbnail */}
       <div className="relative overflow-hidden">
         <img
-          src={model.thumbnail?.url || '/api/placeholder/400/300'}
+          src={model.thumbnail?.secure_url || '/api/placeholder/400/300'}
           alt={model.name}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
@@ -124,7 +124,7 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
             <div className="flex space-x-1">
               {model.glbFile && (
                 <button
-                  onClick={() => handleDownload(model.glbFile!.url, `${model.name}.glb`)}
+                  onClick={() => handleDownload(model.glbFile!.secure_url, `${model.name}.glb`)}
                   className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
                   title="Download GLB"
                 >
@@ -133,7 +133,7 @@ const ModelCard: React.FC<ModelCardProps> = ({ model }) => {
               )}
               {model.usdzFile && (
                 <button
-                  onClick={() => handleDownload(model.usdzFile!.url, `${model.name}.usdz`)}
+                  onClick={() => handleDownload(model.usdzFile!.secure_url, `${model.name}.usdz`)}
                   className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
                   title="Download USDZ"
                 >

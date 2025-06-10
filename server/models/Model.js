@@ -10,26 +10,26 @@ const modelSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  originalFile: {
-    filename: String,
-    path: String,
-    mimetype: String,
-    size: Number
+  cloudinary: {
+    public_id: String,
+    secure_url: String,
+    resource_type: String,
+    format: String,
+    width: Number,
+    height: Number,
+    bytes: Number,
   },
   glbFile: {
-    filename: String,
-    path: String,
-    url: String
+    public_id: String,
+    secure_url: String
   },
   usdzFile: {
-    filename: String,
-    path: String,
-    url: String
+    public_id: String,
+    secure_url: String
   },
   thumbnail: {
-    filename: String,
-    path: String,
-    url: String
+    public_id: String,
+    secure_url: String
   },
   fileType: {
     type: String,

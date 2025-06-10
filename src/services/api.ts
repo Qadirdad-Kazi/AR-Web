@@ -5,15 +5,13 @@ export interface Model {
   name: string;
   description: string;
   thumbnail: {
-    url: string;
+    secure_url: string;
   };
   glbFile?: {
-    url: string;
-    filename: string;
+    secure_url: string;
   };
   usdzFile?: {
-    url: string;
-    filename: string;
+    secure_url: string;
   };
   fileSize: number;
   viewCount: number;

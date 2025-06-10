@@ -5,9 +5,10 @@ interface ARViewerProps {
   glbUrl?: string;
   usdzUrl?: string;
   modelName: string;
+  posterUrl?: string;
 }
 
-const ARViewer: React.FC<ARViewerProps> = ({ glbUrl, usdzUrl, modelName }) => {
+const ARViewer: React.FC<ARViewerProps> = ({ glbUrl, usdzUrl, modelName, posterUrl }) => {
   const modelViewerRef = useRef<any>(null);
   const [deviceType, setDeviceType] = useState<'ios' | 'android' | 'desktop'>('desktop');
   const [arSupported, setArSupported] = useState(false);
@@ -134,6 +135,9 @@ const ARViewer: React.FC<ARViewerProps> = ({ glbUrl, usdzUrl, modelName }) => {
         <model-viewer
           ref={modelViewerRef}
           src={getModelUrl()}
+          ios-src={usdzUrl}
+          alt={modelName}
+          poster={posterUrl}
           ar={arSupported}
           ar-modes={getArModes()}
           camera-controls={true}
@@ -144,7 +148,6 @@ const ARViewer: React.FC<ARViewerProps> = ({ glbUrl, usdzUrl, modelName }) => {
           environment-image="https://modelviewer.dev/shared-assets/environments/moon_1k.hdr"
           shadow-intensity="1"
           shadow-softness="0.5"
-          exposure="1"
           style={{
             width: '100%',
             height: '100%',
