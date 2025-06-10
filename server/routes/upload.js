@@ -55,13 +55,26 @@ router.post('/', upload.single('model'), async (req, res) => {
 
     // Construct URLs for derivatives using Cloudinary transformations
     const glbUrl = uploadedFile.path;
-    const usdzUrl = cloudinary.url(uploadedFile.filename, { resource_type: 'raw', fetch_format: 'usdz' });
+    
+    // Generate USDZ URL with correct MIME type
+    const usdzUrl = cloudinary.url(uploadedFile.filename, { 
+      resource_type: 'raw',
+      type: 'fetch',
+      sign_url: true,
+      secure: true,
+      fetch_format: 'usdz',
+      transformation: [
+        { flags: 'attachment:usdz', fetch_format: 'usdz' }
+      ]
+    });
+    
     const thumbnailUrl = cloudinary.url(uploadedFile.filename, { 
       resource_type: 'image', 
       fetch_format: 'png',
       width: 400, 
       height: 300, 
-      crop: 'fit' 
+      crop: 'fit',
+      secure: true
     });
 
     const model = new Model({
