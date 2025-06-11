@@ -20,8 +20,6 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
         },
       },
-      // Enable client-side routing in development
-      historyApiFallback: true,
     },
     build: {
       outDir: 'dist',

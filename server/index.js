@@ -52,6 +52,9 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// Export the Express API
+export default app;
+
 // Handle favicon.ico requests
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(process.cwd(), 'public', 'favicon.ico'));
