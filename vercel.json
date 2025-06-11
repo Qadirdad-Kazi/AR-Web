@@ -26,6 +26,10 @@
       "dest": "/assets/$1"
     },
     {
+      "src": "^/favicon\\.ico$",
+      "dest": "/public/favicon.ico"
+    },
+    {
       "src": "^/(.*)",
       "dest": "/index.html"
     }

@@ -22,11 +22,14 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Serve static files from the public directory
+app.use(express.static(path.join(process.cwd(), 'public')));
+
 // In production, serve static files from the Vite build output directory
 if (process.env.NODE_ENV === 'production') {
   const clientPath = path.join(process.cwd(), 'dist');
   
-  // Serve static files
+  // Serve static files from dist
   app.use(express.static(clientPath));
   
   // Handle SPA fallback - serve index.html for any other requests
@@ -34,6 +37,11 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(clientPath, 'index.html'));
   });
 }
+
+// Handle favicon.ico requests
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'public', 'favicon.ico'));
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/webarstudio', {
