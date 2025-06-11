@@ -19,20 +19,29 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// API Routes
+app.use('/api/models', modelRoutes);
+app.use('/api/upload', uploadRoutes);
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // Serve static files from the public directory
 app.use(express.static(path.join(process.cwd(), 'public')));
+
+// Serve uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // In production, serve static files from the Vite build output directory
 if (process.env.NODE_ENV === 'production') {
   const clientPath = path.join(process.cwd(), 'dist');
   
   // Serve static files from dist
-  app.use(express.static(clientPath));
+  app.use(express.static(clientPath, { index: false }));
   
-  // Handle SPA fallback - serve index.html for any other requests
+  // Serve index.html for all other routes
   app.get('*', (req, res) => {
     res.sendFile(path.join(clientPath, 'index.html'));
   });
@@ -41,6 +50,17 @@ if (process.env.NODE_ENV === 'production') {
 // Handle favicon.ico requests
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(process.cwd(), 'public', 'favicon.ico'));
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not Found', path: req.path });
 });
 
 // Connect to MongoDB
