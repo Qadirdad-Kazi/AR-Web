@@ -5,6 +5,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import modelRoutes from './routes/models.js';
 import uploadRoutes from './routes/upload.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +21,15 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve static files from the Vite build output directory
+const clientPath = path.join(process.cwd(), 'dist');
+app.use(express.static(clientPath));
+
+// Handle SPA fallback - serve index.html for any other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientPath, 'index.html'));
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/webarstudio', {
