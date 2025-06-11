@@ -39,11 +39,16 @@ if (process.env.NODE_ENV === 'production') {
   const clientPath = path.join(process.cwd(), 'dist');
   
   // Serve static files from dist
-  app.use(express.static(clientPath, { index: false }));
+  app.use(express.static(clientPath));
   
-  // Serve index.html for all other routes
+  // Handle client-side routing - return index.html for all other requests
   app.get('*', (req, res) => {
-    res.sendFile(path.join(clientPath, 'index.html'));
+    res.sendFile(path.join(clientPath, 'index.html'), (err) => {
+      if (err) {
+        console.error('Error sending file:', err);
+        res.status(500).send('Error loading the application');
+      }
+    });
   });
 }
 

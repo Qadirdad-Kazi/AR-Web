@@ -2,30 +2,39 @@
   "version": 2,
   "builds": [
     {
+      "src": "server/index.js",
+      "use": "@vercel/node"
+    },
+    {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist"
       }
-    },
-    {
-      "src": "server/index.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/server/index.js" },
-    { "src": "/uploads/(.*)", "dest": "/server/index.js" },
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/favicon.ico", "dest": "/public/favicon.ico" },
-    { "src": "/_next/static/(.*)", "dest": "/_next/static/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/server/index.js"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/server/index.js"
+    }
+  ],
+  "rewrites": [
+    { "source": "/:path*", "dest": "/server/index.js" }
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/server/index.js" }
-  ]
+  }
 }
