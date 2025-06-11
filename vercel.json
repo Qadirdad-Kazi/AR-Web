@@ -32,7 +32,7 @@
     }
   ],
   "rewrites": [
-    { "source": "/:path*", "dest": "/server/index.js" }
+    { "source": "/:path*", "destination": "/server/index.js" }
   ],
   "env": {
     "NODE_ENV": "production"
